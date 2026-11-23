@@ -2,7 +2,7 @@
 
 Локальный ИИ-помощник для операционки компании (рабочее название).
 
-- Прототип онлайн: https://timofeevaekaterinan-rgb.github.io/avtodoks-prototype/
+- Прототип онлайн: https://timofeevaekaterinan-rgb.github.io/ordo-prototype/
 - Исходник: [prototype/index.html](prototype/index.html). После правок – `python3 build_pages.py`, коммит и push, Pages обновится сам
 - Ссылки на экраны: добавить к адресу `#home`, `#reports`, `#report`, `#acts`, `#review`, `#contracts`, `#contract`, `#law`, `#sources`
 
