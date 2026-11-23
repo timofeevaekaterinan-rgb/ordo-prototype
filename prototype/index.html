@@ -3,38 +3,44 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap">
 <style>
 /* Десктоп-приложение: заголовок окна, слева навигация по пространствам, справа рабочая зона «чат + живой артефакт» */
 :root{
-  --bg:#FFFFFF;
-  --surface:#FFFFFF;
+  --bg:#F3F3F6;
+  --surface:#F3F3F6;
   --panel:#FFFFFF;
-  --side:#FFFFFF;
-  --line:#E0E3E9;
-  --line-2:#ECEEF2;
-  --ink:#0F1115;
-  --ink-2:#4B5160;
-  --ink-3:#868C9B;
-  --accent:#3A5BFF;
+  --side:#F3F3F6;
+  --tint:#F6F6F9;
+  --line:#E3E3EA;
+  --line-2:#EDEDF2;
+  --ink:#1F1E33;
+  --ink-2:#56556B;
+  --ink-3:#8F8EA2;
+  --navy:#2A2943;
+  --accent:#7558F5;
   --accent-ink:#FFFFFF;
-  --accent-soft:#ECEFFF;
-  --pri:#0F1115;
+  --accent-soft:#EEEAFF;
+  --lav:#BCA9FF;
+  --peach:#FFE2BE;
+  --lime:#EBF65C;
+  --sky:#D9E1F7;
+  --pri:#1F1E33;
   --pri-ink:#FFFFFF;
-  --warn:#B45309;
-  --warn-soft:#FEF3E2;
-  --crit:#D92D20;
-  --crit-soft:#FDECEA;
-  --ok:#12805C;
-  --ok-soft:#E6F5EE;
-  --info:#5B6478;
-  --info-soft:#EEF0F4;
+  --warn:#B4620A;
+  --warn-soft:#FFEBD3;
+  --crit:#D63B3B;
+  --crit-soft:#FFE5E2;
+  --ok:#3B7A1C;
+  --ok-soft:#EAF7C9;
+  --info:#6550E6;
+  --info-soft:#EEEAFF;
   --paper:#FFFFFF;
   --hl:#FFF1B8;
-  --shadow:0 1px 2px rgba(15,17,21,.04),0 6px 20px rgba(15,17,21,.06);
-  --f-ui:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --shadow:0 1px 2px rgba(31,30,51,.04),0 10px 28px rgba(31,30,51,.07);
+  --f-ui:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-doc:"PT Serif","Times New Roman",Georgia,serif;
-  --r:12px;
+  --r:18px;
 }
 /* Прототип всегда светлый, независимо от темы системы */
 :root,:root[data-theme]{color-scheme:light}
@@ -121,9 +127,7 @@ p{margin:0}
 .switch[aria-checked="true"]::after{transform:translateX(16px)}
 
 /* ГЛАВНАЯ */
-.home{max-width:980px;margin:0 auto;padding-block:40px 56px;padding-inline:max(24px,env(safe-area-inset-left,0px)) max(24px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:28px}
-.hello h1{font-size:30px;line-height:1.15}
-.hello p{color:var(--ink-2);margin-top:6px;font-size:15px}
+.home{max-width:1180px;margin:0 auto;padding-block:24px 48px;padding-inline:max(24px,env(safe-area-inset-left,0px)) max(24px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:28px}
 .composer{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:14px 14px 10px;display:flex;flex-direction:column;gap:10px}
 .composer textarea{border:0;outline:0;resize:none;background:transparent;font-size:15px;line-height:1.5;min-height:52px;width:100%}
 .composer textarea::placeholder{color:var(--ink-3)}
@@ -146,13 +150,6 @@ p{margin:0}
 .quick button:hover{color:var(--ink);border-color:var(--ink-3)}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
 .sec-h h2{font-size:17px}
-.attn{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.attn .card{padding:16px;display:flex;flex-direction:column;gap:10px;text-align:left;border-left-width:1px}
-.attn .card:hover{border-color:var(--ink-3)}
-.attn .card h3{font-size:15px;line-height:1.3}
-.attn .card p{font-size:13px;color:var(--ink-2)}
-.attn .card .go{margin-top:auto;font-size:13px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:4px}
-.cols2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px}
 .list{display:flex;flex-direction:column}
 .list .li{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--line-2);cursor:pointer;min-width:0}
 .list .li:last-child{border-bottom:0}
@@ -485,6 +482,157 @@ button.ev:hover{filter:brightness(.95)}
   .win.chat-min .chat-rail .rail-lbl{writing-mode:horizontal-tb;transform:none;margin:0}
 }
 
+/* ===== визуал по референсу: светлый холст, белые карточки, темный блок, пастель ===== */
+h1,h2,h3{font-weight:700;letter-spacing:-.015em}
+.titlebar{background:var(--side);border-bottom:0;height:56px}
+.win{grid-template-rows:56px 1fr}
+.search{height:38px;border:0;border-radius:999px;padding:0 14px;max-width:520px}
+.search kbd{border:0;background:var(--tint)}
+.local{height:34px;padding:0 14px}
+.side{border-right:0;padding:18px 0 16px 14px;gap:22px;position:relative}
+.side::after{content:"";position:absolute;top:12px;bottom:12px;right:0;width:1px;background:var(--line)}
+.btn-new{height:44px;border-radius:14px;margin-right:14px;padding:0 16px}
+.nav{gap:4px;padding-right:14px}
+.nav a{height:40px;border-radius:12px;padding:0 12px;position:relative;font-weight:500}
+.nav a:hover{background:var(--panel)}
+.nav a.on{background:transparent;color:var(--ink);font-weight:700}
+.nav a.on::before{content:"";position:absolute;left:-14px;top:8px;bottom:8px;width:4px;border-radius:0 4px 4px 0;background:var(--pri)}
+.nav-label{padding:0 12px 6px}
+.recent a{height:32px;font-weight:500}
+.engine{border:0;border-radius:16px;margin-right:14px}
+.me{margin-right:14px;width:auto}
+.me:hover{background:var(--panel)}
+.ava{background:var(--lav);color:var(--ink)}
+
+.card{border:0;border-radius:var(--r)}
+.btn{border:0;border-radius:999px;height:36px;padding:0 16px;font-weight:600}
+.btn:hover{border-color:transparent;box-shadow:0 0 0 1px var(--line)}
+.btn.icon{width:36px;padding:0}
+.btn.sm{height:30px;padding:0 12px}
+.btn.ghost:hover{background:var(--panel);box-shadow:none}
+.ibtn{border-radius:12px}
+.ibtn:hover{background:var(--tint)}
+.ibtn.send{border-radius:12px;width:38px;height:38px}
+.chip{height:24px;padding:0 10px}
+.chip.neu{background:var(--tint)}
+.composer{border:0;box-shadow:none;border-radius:20px;padding:16px 16px 12px}
+.space-sel{border:0;background:var(--tint);border-radius:999px}
+.quick button{border:0;height:36px;padding:0 14px;font-weight:600}
+.quick button:hover{box-shadow:0 0 0 1px var(--line)}
+.sec-h h2{font-size:18px}
+.switch{background:#D9D9E3}
+.page-h h1{font-size:26px}
+.att{border:0;background:var(--tint)}
+
+/* главная */
+.hero{background:var(--navy);color:#fff;border-radius:24px;padding:28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:24px;align-items:center}
+.hero .hi{font-size:15px;opacity:.75}
+.hero h1{font-size:30px;line-height:1.2;margin-top:10px;font-weight:700}
+.hero p{font-size:13.5px;opacity:.7;margin-top:12px;line-height:1.5}
+.hero .btn{margin-top:20px;background:#fff;color:var(--ink);height:38px;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.tasks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.task{border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px;text-align:left;color:var(--ink);min-height:200px;transition:transform .15s}
+.task:hover{transform:translateY(-3px)}
+.task.lav{background:var(--lav)}.task.peach{background:var(--peach)}.task.lime{background:var(--lime)}
+.task .top{display:flex;justify-content:space-between;font-size:13px;font-weight:600}
+.task svg.i{width:28px;height:28px;stroke-width:2}
+.task b{font-size:16px;line-height:1.25}
+.task .prog{margin-top:auto;display:flex;flex-direction:column;gap:6px;font-size:11px;font-weight:600;opacity:.8}
+.task .prog i{display:block;height:5px;border-radius:3px;background:rgba(31,30,51,.15);overflow:hidden}
+.task .prog i u{display:block;height:100%;background:var(--ink);border-radius:3px}
+.dash{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;align-items:start}
+.dash > div{display:flex;flex-direction:column;gap:14px;min-width:0}
+.stats{display:grid;grid-template-columns:1fr 1fr 2fr;gap:12px}
+.stat{padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.stat b{font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.stat span{font-size:12.5px;color:var(--ink-2);line-height:1.35}
+.stat.wide{flex-direction:row;align-items:center;gap:14px}
+.stat.wide > div{display:flex;flex-direction:column;gap:8px}
+.stat.wide svg{flex:1;height:60px;min-width:0}
+.rows{display:flex;flex-direction:column;gap:6px}
+.row{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;gap:14px;align-items:center;padding:8px 10px 8px 8px;border-radius:16px;text-align:left;width:100%}
+.row:hover{background:var(--panel)}
+.row .sq{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--ink)}
+.row .sq.lav{background:var(--lav)}.row .sq.peach{background:var(--peach)}.row .sq.lime{background:var(--lime)}
+.row b{display:block;font-size:14px}
+.row small{color:var(--ink-3);font-size:12px}
+.row .when{font-size:12.5px;color:var(--ink-2);white-space:nowrap}
+.mcal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px 2px;text-align:center;font-size:12.5px}
+.mcal .wd{font-size:11px;color:var(--ink-3);padding-bottom:4px}
+.mcal span{height:32px;display:grid;place-items:center;border-radius:10px;font-weight:600;position:relative}
+.mcal span.out{color:var(--ink-3);font-weight:500;opacity:.6}
+.mcal span.today{background:var(--pri);color:#fff}
+.mcal span.dot::after{content:"";position:absolute;bottom:3px;width:4px;height:4px;border-radius:50%;background:var(--accent)}
+.mcal span.today.dot::after{background:#fff}
+.mcal-h{display:flex;align-items:center;justify-content:space-between}
+.mcal-h b{font-size:18px}
+.upc{display:flex;align-items:center;gap:14px;padding:14px;text-align:left;width:100%}
+.upc .sq{width:48px;height:48px;border-radius:12px;background:var(--navy);color:var(--lime);display:grid;place-items:center;flex:none}
+.upc .t{flex:1;min-width:0}
+.upc small{color:var(--ink-3);font-size:12px}
+.upc b{display:block;font-size:14px;line-height:1.3}
+
+/* чат и артефакт: чат – белая карточка, артефакт лежит на холсте */
+.split{padding:12px 14px 14px;gap:14px}
+.chat{border-right:0;background:var(--panel);border-radius:20px;overflow:hidden}
+.chat-h{border-bottom:1px solid var(--line-2)}
+.chat-in{border-top:0}
+.chat-in .box{border:0;background:var(--tint);border-radius:14px}
+.msg.u .bub{background:var(--accent-soft);border-radius:16px 16px 4px 16px}
+.voice,.transcript,.steps{border-color:var(--line-2)}
+.voice{background:var(--tint);border:0}
+.steps{border:0;background:var(--tint)}
+.sugg button{border:0;background:var(--tint);height:30px;padding:0 12px;font-weight:600}
+.sugg button:hover{background:var(--accent-soft)}
+.art,.art-h{background:transparent}
+.art-h{border-bottom:0;padding:6px 4px 14px}
+.art-b{padding:0 4px 20px}
+.win.chat-min .split{grid-template-columns:56px minmax(0,1fr)}
+.kpi{padding:18px;gap:6px}
+.kpi b{order:-1;font-size:28px;font-weight:700;letter-spacing:-.02em}
+.kpi small{font-size:12.5px;color:var(--ink-2)}
+.sched{padding:14px 18px}
+th{border-bottom-color:var(--line-2)}
+.rep-menu,.pop{border:0;border-radius:16px}
+
+/* галереи: пастельные превью */
+.rcard{border:0;border-radius:20px}
+.rcard:hover{box-shadow:var(--shadow);border-color:transparent;transform:translateY(-2px)}
+.rcard{transition:transform .15s,box-shadow .15s}
+.rthumb{--accent:#1F1E33;--line:rgba(31,30,51,.18);--paper:#FFFFFF;border-bottom:0;margin:8px 8px 0;border-radius:14px;height:120px}
+.rgrid .rcard:nth-child(4n+2) .rthumb{background:var(--lav)}
+.rgrid .rcard:nth-child(4n+3) .rthumb{background:var(--peach)}
+.rgrid .rcard:nth-child(4n+4) .rthumb{background:var(--lime)}
+.rgrid .rcard:nth-child(4n+5) .rthumb{background:var(--sky)}
+.rcard.new{background:transparent;border:2px dashed var(--line)}
+.rcard.new .plus{background:var(--panel)}
+.rgrid.list{border:0;border-radius:20px}
+.rgrid.list .rthumb{margin:8px;border-radius:10px}
+.filters button{border:0;height:34px;padding:0 14px;font-weight:600}
+.seg{border:0;border-radius:999px;padding:3px}
+.seg button{border-radius:999px;height:30px;padding:0 12px}
+.seg button.on{background:var(--tint)}
+
+/* календарь документов */
+.cal{padding:18px}
+.day{border:0;background:var(--tint);border-radius:12px}
+.day.today{box-shadow:none;border:0}
+.day.today .n{background:var(--pri);color:#fff;width:24px;height:24px;border-radius:8px;display:grid;place-items:center}
+.ev{border-radius:7px}
+.alert{border-radius:18px}
+.alert .ico{border-radius:12px}
+
+/* договор и документы на холсте */
+.doc,.sheet{border:0;border-radius:10px}
+.fnd{border:0}
+.flow .node{border:0;background:var(--tint)}
+.flow .core .node{background:var(--panel)}
+.flow .net{border-color:var(--line)}
+.modal{border-radius:22px}
+.fld input,.fld select,.fld textarea{border:0;background:var(--tint);border-radius:12px}
+@media (max-width:1100px){.hero{grid-template-columns:minmax(0,1fr)}.dash{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:700px){.tasks,.stats{grid-template-columns:minmax(0,1fr)}.task{min-height:0}.split{padding:8px}}
+
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 
 /* адаптив */
@@ -553,7 +701,7 @@ button.ev:hover{filter:brightness(.95)}
     <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
     <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><path d="M16 4.5a3.5 3.5 0 010 7M18 14a6 6 0 013.5 6"/></symbol>
     <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a5 5 0 01-.5-10A6 6 0 0118 9a4.5 4.5 0 01-1 9z"/><path d="M12 11v6M9.5 14.5L12 17l2.5-2.5"/></symbol>
-    <symbol id="logo" viewBox="0 0 32 32"><rect x="3" y="3" width="26" height="26" rx="8" fill="var(--accent)" stroke="none"/><path d="M11 9h7l4 4v10H11z" fill="none" stroke="var(--accent-ink)" stroke-width="1.8" stroke-linejoin="round"/><path d="M14.5 17.5l2 2 3.5-4" fill="none" stroke="var(--accent-ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="logo" viewBox="0 0 32 32"><rect x="3" y="3" width="26" height="26" rx="8" fill="var(--pri)" stroke="none"/><path d="M11 9h7l4 4v10H11z" fill="none" stroke="var(--accent-ink)" stroke-width="1.8" stroke-linejoin="round"/><path d="M14.5 17.5l2 2 3.5-4" fill="none" stroke="var(--accent-ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   </defs>
 </svg>
 
@@ -594,9 +742,33 @@ button.ev:hover{filter:brightness(.95)}
       <!-- ===================== СЕГОДНЯ ===================== -->
       <section class="view" id="v-home" data-title="Сегодня">
         <div class="home">
-          <div class="hello">
-            <h1>Добрый день, Анна</h1>
-            <p>Понедельник, 2 ноября. Расскажите, что нужно сделать, – голосом, текстом или скриншотом.</p>
+          <div class="hero">
+            <div>
+              <span class="hi">Добрый день, Анна!</span>
+              <h1>Сегодня 3 задачи ждут вашей проверки</h1>
+              <p>Понедельник, 2 ноября. Остальное Автодокс сделал сам: обновил 4 отчета и собрал 8 документов.</p>
+              <button class="btn" data-go="acts">Календарь <svg class="i" style="width:14px;height:14px;transform:rotate(-45deg)"><use href="#i-send"/></svg></button>
+            </div>
+            <div class="tasks">
+              <button class="task lav" data-go="review">
+                <span class="top"><span>01</span><span>завтра</span></span>
+                <svg class="i"><use href="#i-doc"/></svg>
+                <b>Акты и счета на 1 284 000 ₽</b>
+                <span class="prog"><span>8 документов · проверено 6</span><i><u style="width:75%"></u></i></span>
+              </button>
+              <button class="task peach" data-con="sev">
+                <span class="top"><span>02</span><span>черновик</span></span>
+                <svg class="i"><use href="#i-pen"/></svg>
+                <b>Договор с АО «Северлес»</b>
+                <span class="prog"><span>3 замечания по закону</span><i><u style="width:40%"></u></i></span>
+              </button>
+              <button class="task lime" data-go="law">
+                <span class="top"><span>03</span><span>радар</span></span>
+                <svg class="i"><use href="#i-scale"/></svg>
+                <b>НДС 22%: затронуто 14 договоров</b>
+                <span class="prog"><span>сделано 1 шаг из 5</span><i><u style="width:20%"></u></i></span>
+              </button>
+            </div>
           </div>
 
           <div class="composer">
@@ -621,30 +793,30 @@ button.ev:hover{filter:brightness(.95)}
             <button data-go="law"><svg class="i"><use href="#i-scale"/></svg>Что изменилось в налогах</button>
           </div>
 
-          <div>
-            <div class="sec-h"><h2>Требует внимания</h2><span class="muted">3 задачи</span></div>
-            <div class="attn">
-              <button class="card" data-go="review">
-                <span class="chip warn"><svg class="i"><use href="#i-clock"/></svg>Завтра, 3 ноября</span>
-                <h3>Отправка 6 актов и 2 счетов на 1 284 000 ₽</h3>
-                <p>Документы собраны автоматически. В двух есть отличия от прошлого месяца – проверьте до 18:00.</p>
-                <span class="go">Проверить <svg class="i" style="width:15px;height:15px"><use href="#i-chev"/></svg></span>
-              </button>
-              <button class="card" data-con="sev">
-                <span class="chip crit"><svg class="i"><use href="#i-alert"/></svg>3 замечания</span>
-                <h3>Договор поставки с АО «Северлес»</h3>
-                <p>Неустойку может снизить суд, указана старая ставка НДС, нет срока ответа на претензию.</p>
-                <span class="go">Открыть <svg class="i" style="width:15px;height:15px"><use href="#i-chev"/></svg></span>
-              </button>
-              <button class="card" data-go="law">
-                <span class="chip info"><svg class="i"><use href="#i-scale"/></svg>Радар законов</span>
-                <h3>НДС 22%: затронуто 14 ваших договоров</h3>
-                <p>Объясню, что поменялось, и соберу список допсоглашений и настроек в 1С.</p>
-                <span class="go">Разобраться <svg class="i" style="width:15px;height:15px"><use href="#i-chev"/></svg></span>
-              </button>
+          <div class="dash">
+            <div>
+              <div class="sec-h" style="margin:0"><h2>Статистика за неделю</h2></div>
+              <div class="stats">
+                <div class="card stat"><b>48</b><span>документов собрано автоматически</span></div>
+                <div class="card stat"><b>10</b><span>замечаний в договорах</span></div>
+                <div class="card stat wide"><div><b>14,5</b><span>часов сэкономлено на рутине</span></div>
+                  <svg viewBox="0 0 140 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 44 C14 40 20 22 34 26 S52 44 66 30 S86 8 100 20 S124 36 140 14 L140 60 L0 60Z" style="fill:var(--accent);opacity:.12"/><path d="M0 44 C14 40 20 22 34 26 S52 44 66 30 S86 8 100 20 S124 36 140 14" style="fill:none;stroke:var(--accent);stroke-width:2.2"/></svg></div>
+              </div>
+              <div class="sec-h" style="margin:10px 0 0"><h2>Живые отчеты</h2><button class="btn ghost sm" data-go="reports">Все отчеты</button></div>
+              <div class="rows">
+                <button class="row" data-rep="deb"><span class="sq lav"><svg class="i"><use href="#i-chart"/></svg></span><span><b>Дебиторская задолженность</b><small>1С · Битрикс24</small></span><span class="when">сегодня, 9:00</span><span class="chip info">новый</span></button>
+                <button class="row" data-rep="pay"><span class="sq peach"><svg class="i"><use href="#i-cal"/></svg></span><span><b>Платежный календарь</b><small>Банк-клиент · договоры</small></span><span class="when">1 час назад</span><span class="chip crit">разрыв 20.11</span></button>
+                <button class="row" data-rep="rev"><span class="sq lime"><svg class="i"><use href="#i-chart"/></svg></span><span><b>Выручка по направлениям</b><small>1С:Бухгалтерия · бюджет</small></span><span class="when">30 октября</span><span class="chip warn">на согласовании</span></button>
+              </div>
+            </div>
+            <div>
+              <div class="mcal-h"><b>Ноябрь 2026</b><span><button class="ibtn" aria-label="Предыдущий месяц" data-toast="Октябрь: 14 документов отправлено"><svg class="i"><use href="#i-left"/></svg></button><button class="ibtn" aria-label="Следующий месяц" data-toast="Декабрь: 9 документов по регламентам"><svg class="i"><use href="#i-chev"/></svg></button></span></div>
+              <div class="mcal" id="mcal"></div>
+              <div class="sec-h" style="margin:8px 0 0"><h2>Ближайшее</h2><button class="btn ghost sm" data-go="acts">Все</button></div>
+              <button class="card upc" data-go="review"><span class="sq"><svg class="i"><use href="#i-doc"/></svg></span><span class="t"><small>завтра, 10:00</small><b>Отправка актов за октябрь – 6 клиентам</b></span><svg class="i"><use href="#i-chev"/></svg></button>
+              <button class="card upc" data-go="acts"><span class="sq" style="color:var(--peach)"><svg class="i"><use href="#i-cal"/></svg></span><span class="t"><small>25 ноября</small><b>Уведомление об исчисленных налогах</b></span><svg class="i"><use href="#i-chev"/></svg></button>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -1407,6 +1579,14 @@ function openReport(id){
   $('#gsched').addEventListener('click',e=>{const on=e.currentTarget.getAttribute('aria-checked')!=='true';e.currentTarget.setAttribute('aria-checked',on);r.sched[0]=on;$('#gsched-txt').textContent=on?r.sched[1]:'Выключено – отчет обновится только по запросу';toast(on?'Автообновление включено':'Автообновление выключено')});
 }
 openReport('deb');
+
+// мини-календарь на главной
+(function(){let h=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(d=>`<span class="wd">${d}</span>`).join('');
+  for(let d=26;d<=31;d++)h+=`<span class="out">${d}</span>`;
+  const ev=[3,10,17,20,25,30];
+  for(let d=1;d<=30;d++)h+=`<span class="${d===2?'today ':''}${ev.includes(d)?'dot':''}">${d}</span>`;
+  for(let d=1;d<=6;d++)h+=`<span class="out">${d}</span>`;
+  $('#mcal').innerHTML=h})();
 
 // календарь
 const EV={
