@@ -93,6 +93,8 @@ p{margin:0}
 .recent a span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .side-foot{margin-top:auto;display:flex;flex-direction:column;gap:8px}
 .engine{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel);display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--ink-2)}
+.engine{text-align:left;width:auto;cursor:pointer}
+.engine:hover{box-shadow:0 0 0 1px var(--line)}
 .engine b{color:var(--ink);font-weight:600}
 .eng-on{display:flex;align-items:center;gap:7px}
 .eng-on .dot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
@@ -361,7 +363,7 @@ button.ev:hover{filter:brightness(.95)}
 .affected div{display:flex;justify-content:space-between;gap:10px}
 
 /* источники */
-.flow{padding:18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,.9fr);gap:16px;align-items:center}
+.flow{padding:18px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:center}
 .flow .col{display:flex;flex-direction:column;gap:8px}
 .flow .node{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-size:13px}
 .flow .core{border:2px solid var(--accent);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--accent-soft)}
@@ -720,7 +722,6 @@ th{border-bottom-color:var(--line-2)}
     <div class="lights" aria-hidden="true"><span></span><span></span><span></span></div>
     <div class="brand"><svg><use href="#logo"/></svg>Автодокс</div>
     <div class="search" role="button" tabindex="0" data-toast="Поиск по документам, отчетам и чатам работает по локальному индексу"><svg class="i"><use href="#i-search"/></svg><span>Найти договор, отчет, контрагента…</span><kbd>⌘K</kbd></div>
-    <button class="local" data-go="sources" title="Все данные обрабатываются на этом компьютере"><span class="dot"></span><span class="lbl">Локально · 0 байт в сеть</span></button>
   </header>
 
   <div class="body">
@@ -741,7 +742,7 @@ th{border-bottom-color:var(--line-2)}
         <a data-go="law"><span>Что изменилось с НДС в 2026</span></a>
       </nav>
       <div class="side-foot">
-        <div class="engine"><b class="eng-on"><span class="dot"></span>Работает без интернета</b><span>Модель Автодокс-32B<br>База законов от 01.11.2026</span></div>
+        <button class="engine" data-go="sources" title="Где обрабатываются данные"><b class="eng-on"><span class="dot"></span>Работает без интернета</b><span>Модель Автодокс-32B<br>База законов от 01.11.2026</span></button>
         <button class="me" data-modal="m-plans"><span class="ava">АБ</span><span><b>Анна Белова</b><small>Финансы · тариф «Отдел»</small></span></button>
       </div>
     </aside>
@@ -755,7 +756,7 @@ th{border-bottom-color:var(--line-2)}
             <div>
               <span class="hi">Добрый день, Анна!</span>
               <h1>Сегодня 3 задачи ждут вашей проверки</h1>
-              <p>Понедельник, 2 ноября. Остальное Автодокс сделал сам: обновил 4 отчета и собрал 8 документов.</p>
+              <p>Понедельник, 2 ноября. Остальное Автодокс сделал сам.</p>
               <button class="btn" data-go="acts">Календарь <svg class="i" style="width:14px;height:14px;transform:rotate(-45deg)"><use href="#i-send"/></svg></button>
             </div>
             <div class="tasks">
@@ -795,19 +796,12 @@ th{border-bottom-color:var(--line-2)}
             </div>
           </div>
 
-          <div class="quick">
-            <button data-go="report"><svg class="i"><use href="#i-chart"/></svg>Отчет по скриншоту таблицы</button>
-            <button data-go="acts"><svg class="i"><use href="#i-cal"/></svg>Регулярные акты и счета</button>
-            <button data-con="sev"><svg class="i"><use href="#i-pen"/></svg>Проверить договор по закону</button>
-            <button data-go="law"><svg class="i"><use href="#i-scale"/></svg>Что изменилось в налогах</button>
-          </div>
-
           <div class="dash">
             <div>
               <div class="sec-h" style="margin:0"><h2>Статистика за неделю</h2></div>
               <div class="stats">
                 <div class="card stat"><b>48</b><span>документов собрано автоматически</span></div>
-                <div class="card stat"><b>10</b><span>замечаний в договорах</span></div>
+                <div class="card stat"><b>12</b><span>отчетов обновлено без вашего участия</span></div>
                 <div class="card stat wide"><div><b>14,5</b><span>часов сэкономлено на рутине</span></div>
                   <svg viewBox="0 0 140 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 44 C14 40 20 22 34 26 S52 44 66 30 S86 8 100 20 S124 36 140 14 L140 60 L0 60Z" style="fill:var(--accent);opacity:.12"/><path d="M0 44 C14 40 20 22 34 26 S52 44 66 30 S86 8 100 20 S124 36 140 14" style="fill:none;stroke:var(--accent);stroke-width:2.2"/></svg></div>
               </div>
@@ -822,8 +816,8 @@ th{border-bottom-color:var(--line-2)}
               <div class="mcal-h"><b>Ноябрь 2026</b><span><button class="ibtn" aria-label="Предыдущий месяц" data-toast="Октябрь: 14 документов отправлено"><svg class="i"><use href="#i-left"/></svg></button><button class="ibtn" aria-label="Следующий месяц" data-toast="Декабрь: 9 документов по регламентам"><svg class="i"><use href="#i-chev"/></svg></button></span></div>
               <div class="mcal" id="mcal"></div>
               <div class="sec-h" style="margin:8px 0 0"><h2>Ближайшее</h2><button class="btn ghost sm" data-go="acts">Все</button></div>
-              <button class="card upc" data-go="review"><span class="sq"><svg class="i"><use href="#i-doc"/></svg></span><span class="t"><small>завтра, 10:00</small><b>Отправка актов за октябрь – 6 клиентам</b></span><svg class="i"><use href="#i-chev"/></svg></button>
-              <button class="card upc" data-go="acts"><span class="sq" style="color:var(--peach)"><svg class="i"><use href="#i-cal"/></svg></span><span class="t"><small>25 ноября</small><b>Уведомление об исчисленных налогах</b></span><svg class="i"><use href="#i-chev"/></svg></button>
+                            <button class="card upc" data-go="acts"><span class="sq" style="color:var(--peach)"><svg class="i"><use href="#i-cal"/></svg></span><span class="t"><small>25 ноября</small><b>Уведомление об исчисленных налогах</b></span><svg class="i"><use href="#i-chev"/></svg></button>
+              <button class="card upc" data-go="acts"><span class="sq" style="color:var(--lav)"><svg class="i"><use href="#i-clock"/></svg></span><span class="t"><small>30 ноября</small><b>Уплата ЕНП – срок перенесен с субботы</b></span><svg class="i"><use href="#i-chev"/></svg></button>
             </div>
           </div>
         </div>
@@ -1188,7 +1182,6 @@ th{border-bottom-color:var(--line-2)}
 
           <aside class="radar">
             <div><span class="eyebrow">Радар изменений</span><h2 style="font-size:16px;margin-top:4px">Касается вашей компании</h2></div>
-            <div class="card it"><span class="chip crit">Важно</span><b>НДС 22%: переходные правила</b><p>Затронуто 14 договоров и 6 позиций в 1С.</p></div>
             <div class="card it"><span class="chip warn">Срок</span><b>Уплата ЕНП в ноябре – 30-го</b><p>28 ноября выпадает на субботу, срок переносится на понедельник. Уже в календаре.</p></div>
             <div class="card it"><span class="chip info">1С</span><b>Новый релиз 1С:Бухгалтерии</b><p>Обновлены формы уведомлений об исчисленных налогах. Объясню, что поменялось в интерфейсе.</p></div>
             <div class="note"><svg class="i"><use href="#i-cloud"/></svg><span>Обновление базы законов приходит раз в неделю одним пакетом. Следующее – 8 ноября. Ваши данные при этом никуда не отправляются.</span></div>
@@ -1202,19 +1195,12 @@ th{border-bottom-color:var(--line-2)}
           <div class="page-h"><div class="t"><h1>Источники данных</h1><p>Автодокс читает ваши системы прямо в локальной сети. Модель, индекс и документы хранятся на сервере компании.</p></div></div>
 
           <div class="card flow">
-            <div class="col">
-              <span class="eyebrow">Ваши системы</span>
-              <div class="node"><span class="logo" style="background:#D7262B;width:24px;height:24px;font-size:9px;border-radius:6px">1С</span>1С:Бухгалтерия, ЗУП</div>
-              <div class="node"><span class="logo" style="background:#2FC6F6;width:24px;height:24px;font-size:9px;border-radius:6px">Б24</span>Битрикс24</div>
-              <div class="node"><span class="logo" style="background:#1D7044;width:24px;height:24px;font-size:9px;border-radius:6px">XLS</span>Папка «Финансы»</div>
-              <div class="node"><span class="logo" style="background:#5B4BC4;width:24px;height:24px;font-size:9px;border-radius:6px">ЭДО</span>Диадок, банк-клиент</div>
-            </div>
             <div class="core">
               <b><svg class="i"><use href="#i-shield"/></svg>Сервер компании «Бухгалтерия-01»</b>
               <div class="node"><svg class="i"><use href="#i-cpu"/></svg>Модель Автодокс-32B · GPU</div>
               <div class="node"><svg class="i"><use href="#i-search"/></svg>Индекс: 48 120 документов</div>
               <div class="node"><svg class="i"><use href="#i-users"/></svg>Права доступа и журнал действий</div>
-              <span class="arrow">← данные читаются только внутри сети</span>
+              <span class="arrow">Читает 1С, Битрикс24, папки и ЭДО – список ниже</span>
             </div>
             <div class="net">
               <b>Интернет</b>
