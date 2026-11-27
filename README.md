@@ -4,6 +4,7 @@
 
 - Прототип онлайн: https://timofeevaekaterinan-rgb.github.io/ordo-prototype/
 - Исходник: [prototype/index.html](prototype/index.html). После правок – `python3 build_pages.py`, коммит и push, Pages обновится сам
+- Демо разных сотрудников: добавить к адресу `?as=head` (руководитель – видит «Команда и роли» в профиле), `assist`, `econ`, `acc`, `law`, `buy`. Роль в интерфейсе не переключается – ее назначает руководитель
 - Ссылки на экраны: добавить к адресу `#home`, `#reports`, `#report`, `#acts`, `#review`, `#contracts`, `#contract`, `#law`, `#sources`
 
 ## Сценарий показа (5 минут)

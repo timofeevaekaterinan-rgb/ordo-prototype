@@ -652,6 +652,23 @@ th{border-bottom-color:var(--line-2)}
 .jira-key{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:7px;background:#E8EEFF;color:#2453C7;font-size:12px;font-weight:700;white-space:nowrap}
 .jira-btn{margin-left:auto}
 
+/* команда и роли */
+.side-foot{position:relative}
+#me-menu{left:0;right:14px;top:auto;bottom:64px;width:auto}
+.me-role{display:flex;flex-direction:column;gap:2px;padding:4px 8px 8px;font-size:13px}
+.me-role small{color:var(--ink-3);font-size:12px;line-height:1.35}
+.tm-who{display:flex;align-items:center;gap:10px}
+.tm-who b{display:block;font-weight:600}
+.tm-who small{color:var(--ink-3);font-size:12px}
+.role-sel{appearance:none;-webkit-appearance:none;height:32px;padding:0 32px 0 12px;border:0;border-radius:999px;background:var(--tint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238F8EA2' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
+.role-sel:hover{box-shadow:0 0 0 1px var(--line)}
+.tm-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tm-bar select{height:36px;border:0;border-radius:999px;padding:0 14px;background:var(--panel);font-size:13px;font-weight:600}
+.roles-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.roles-grid .card{padding:16px;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.roles-grid .card p{color:var(--ink-2)}
+@media (max-width:900px){.roles-grid{grid-template-columns:minmax(0,1fr)}}
+
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 
 /* адаптив */
@@ -756,7 +773,8 @@ th{border-bottom-color:var(--line-2)}
       </nav>
       <div class="side-foot">
         <button class="engine" data-go="sources" title="Где обрабатываются данные"><b class="eng-on"><span class="dot"></span>Работает без интернета</b><span>Модель Ordo-32B<br>База законов от 01.11.2026</span></button>
-        <button class="me" data-modal="m-plans"><span class="ava" id="me-ava">АБ</span><span><b id="me-name">Анна Белова</b><small id="me-sub">Экономист · УК холдинга</small></span></button>
+        <div class="rep-menu" id="me-menu" hidden></div>
+        <button class="me" id="me-btn" aria-haspopup="true"><span class="ava" id="me-ava">АБ</span><span><b id="me-name">Анна Белова</b><small id="me-sub">Экономист · УК холдинга</small></span></button>
       </div>
     </aside>
 
@@ -767,7 +785,7 @@ th{border-bottom-color:var(--line-2)}
         <div class="home">
           <div class="hero">
             <div>
-              <span class="role-tag" id="role-tag">Экономист · УК холдинга</span><br>
+              <span class="role-tag" id="role-tag">Экономист · УК холдинга</span><br>
               <span class="hi" id="hello">Добрый день, Анна!</span>
               <h1>Сегодня 3 задачи ждут вашей проверки</h1>
               <p>Понедельник, 2 ноября. Остальное Ordo сделал сам.</p>
@@ -920,6 +938,30 @@ th{border-bottom-color:var(--line-2)}
               </div>
             </div>
             <div class="art-b" id="art-gen" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== КОМАНДА И РОЛИ ===================== -->
+      <section class="view" id="v-team" data-title="Команда и роли" hidden>
+        <div class="page">
+          <div class="page-h">
+            <div class="t"><h1>Команда и роли</h1><p>Роль назначает руководитель. От роли зависят задачи сотрудника на главной и данные, которые он видит.</p></div>
+            <button class="btn pri" data-modal="m-invite"><svg class="i"><use href="#i-plus"/></svg>Пригласить сотрудника</button>
+          </div>
+          <div class="tm-bar"><select id="tm-ent" aria-label="Предприятие"></select><span class="muted" id="tm-count"></span></div>
+          <div class="card"><div class="tbl-wrap"><table>
+            <thead><tr><th>Сотрудник</th><th>Предприятие</th><th>Роль</th><th>Видит данные</th><th>Статус</th></tr></thead>
+            <tbody id="tm-rows"></tbody>
+          </table></div></div>
+          <div class="sec-h" style="margin:8px 0 0"><h2>Что дает роль</h2></div>
+          <div class="roles-grid">
+            <div class="card"><b>Помощник руководителя</b><p>Протоколы совещаний, поручения в Jira, сводки по предприятиям к планеркам.</p></div>
+            <div class="card"><b>Экономист</b><p>Живые отчеты, план-факт по площадкам, платежный календарь, бюджет.</p></div>
+            <div class="card"><b>Бухгалтер</b><p>Регулярные акты и счета, сверки между юрлицами, изменения в налогах.</p></div>
+            <div class="card"><b>Юрист</b><p>Договоры и их проверка по закону, протоколы разногласий, правовой радар.</p></div>
+            <div class="card"><b>Закупки</b><p>Сравнение коммерческих предложений, договоры поставки, оплаты поставщикам.</p></div>
+            <div class="card"><b>Руководитель</b><p>Все данные холдинга, согласования и назначение ролей сотрудникам.</p></div>
           </div>
         </div>
       </section>
@@ -1283,6 +1325,24 @@ th{border-bottom-color:var(--line-2)}
   </div>
 </div>
 
+<div class="scrim" id="m-invite" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mi-t">
+    <div class="modal-h"><b id="mi-t">Пригласить сотрудника</b><button class="ibtn" data-close aria-label="Закрыть"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="modal-b">
+      <div class="fld-row">
+        <label class="fld"><span>Имя и фамилия</span><input id="tm-inv-n" placeholder="Например, Петр Смирнов"></label>
+        <label class="fld"><span>Рабочая почта</span><input id="tm-inv-m" type="email" placeholder="p.smirnov@holding.ru"></label>
+      </div>
+      <div class="fld-row">
+        <label class="fld"><span>Предприятие</span><select id="tm-inv-e"></select></label>
+        <label class="fld"><span>Роль</span><select id="tm-inv-r"></select></label>
+      </div>
+      <div class="note"><svg class="i"><use href="#i-shield"/></svg><span>Сотрудник войдет по ссылке из письма и сразу увидит задачи своей роли. Сам поменять роль он не сможет.</span></div>
+    </div>
+    <div class="modal-f"><button class="btn" data-close>Отмена</button><button class="btn pri" id="tm-inv-save">Отправить приглашение</button></div>
+  </div>
+</div>
+
 <div class="scrim" id="m-plans" hidden>
   <div class="modal wide" role="dialog" aria-modal="true" aria-labelledby="mpl-t">
     <div class="modal-h"><b id="mpl-t">Тарифы Ordo</b><button class="ibtn" data-close aria-label="Закрыть"><svg class="i"><use href="#i-x"/></svg></button></div>
@@ -1302,7 +1362,7 @@ th{border-bottom-color:var(--line-2)}
 <script>
 (function(){
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const VIEWS=['home','reports','report','contracts','acts','review','contract','law','sources'];
+const VIEWS=['home','reports','report','contracts','team','acts','review','contract','law','sources'];
 const NAVMAP={review:'acts',report:'reports',contract:'contracts'};
 
 function toast(msg){
@@ -1312,6 +1372,7 @@ function toast(msg){
 }
 function go(v,push=true){
   if(!VIEWS.includes(v))v='home';
+  if(v==='team'&&!isHead()){toast('Роли назначает руководитель');v='home'}
   if(v==='report'||v==='contract')setChatMin(false);
   VIEWS.forEach(x=>{$('#v-'+x).hidden=x!==v});
   const nv=NAVMAP[v]||v;
@@ -1639,6 +1700,10 @@ openReport('deb');
 
 // пользователи по ролям: у каждого специалиста свои задачи дня
 const ROLES=[
+  {id:'head',label:'Руководитель',name:'Сергей',full:'Сергей Петров',sub:'Генеральный директор · УК',ava:'СП',admin:true,tasks:[
+    ['lav','01','согласование','i-chart','Выручка по направлениям','3 квартал · ждет вас',90,{rep:'rev'}],
+    ['peach','02','риск','i-chart','План-факт: ГОК +6,2%','перерасход 57 млн ₽',60,{rep:'pf'}],
+    ['lime','03','сегодня','i-chat','Протокол планерки','7 поручений в Jira',80,{rep:'meet'}]]},
   {id:'assist',label:'Помощник руководителя',name:'Ирина',full:'Ирина Котова',sub:'Помощник генерального · УК',ava:'ИК',tasks:[
     ['lav','01','сейчас','i-chat','Протокол планерки и 7 поручений','поручения уйдут в Jira',60,{rep:'meet'}],
     ['peach','02','просрочено','i-alert','3 поручения в Jira не закрыты','добавлены в протокол',30,{rep:'meet'}],
@@ -1682,6 +1747,54 @@ $('#hold-btn').addEventListener('click',e=>{e.stopPropagation();const m=$('#hold
 $('#hold-menu').addEventListener('click',e=>{const b=e.target.closest('[data-ent]');if(!b)return;const [n,d]=ENTS[+b.dataset.ent];
   $('#hold-name').textContent=n;$('#hold-sub').textContent=d;$('#hold-menu').hidden=true;toast(n==='Весь холдинг'?'Показаны данные всех 6 юрлиц':'Показаны данные: '+n)});
 document.addEventListener('click',e=>{if(!e.target.closest('.hold'))$('#hold-menu').hidden=true});
+
+// команда и роли: роли назначает только руководитель
+const ACCESS={head:'все данные холдинга',assist:'протоколы, поручения, сводки',econ:'отчеты, план-факт, бюджет',acc:'учет, акты, сверки, ЭДО',law:'договоры, правовая база',buy:'закупки, КП, договоры поставки'};
+const TEAM=[
+  {id:'head',n:'Сергей Петров',p:'Генеральный директор',e:'Управляющая компания',r:'head',me:true},
+  {n:'Ирина Котова',p:'Помощник генерального',e:'Управляющая компания',r:'assist'},
+  {n:'Анна Белова',p:'Экономист',e:'Управляющая компания',r:'econ'},
+  {n:'Ольга Соколова',p:'Бухгалтер ОЦО',e:'Управляющая компания',r:'acc'},
+  {n:'Дмитрий Орлов',p:'Юрист',e:'Управляющая компания',r:'law'},
+  {n:'Сергей Лебедев',p:'Специалист по закупкам',e:'Металлургический завод',r:'buy'},
+  {n:'Алексей Ковалев',p:'Экономист завода',e:'Коксохимический завод',r:'econ'},
+  {n:'Елена Морозова',p:'Главный бухгалтер',e:'Горно-обогатительный комбинат',r:'acc'},
+  {n:'Павел Гусев',p:'Помощник директора шахты',e:'Шахта «Северная»',r:'assist'},
+  {n:'Мария Ильина',p:'Юрист',e:'Торговый дом',r:'law',inv:true}
+];
+let teamEnt='Все предприятия';
+const roleOf=id=>ROLES.find(x=>x.id===id);
+const isHead=()=>!!(roleOf(curRole)||{}).admin;
+const ini=n=>n.split(' ').map(x=>x[0]).join('').slice(0,2);
+function renderTeam(){
+  const ents=['Все предприятия',...new Set(TEAM.map(t=>t.e))];
+  $('#tm-ent').innerHTML=ents.map(e=>`<option${e===teamEnt?' selected':''}>${esc(e)}</option>`).join('');
+  const list=TEAM.filter(t=>teamEnt==='Все предприятия'||t.e===teamEnt);
+  $('#tm-rows').innerHTML=list.map(t=>{const i=TEAM.indexOf(t);
+    const sel=t.me?`<span class="chip neu">${esc(roleOf(t.r).label)} · вы</span>`:`<select class="role-sel" data-tm="${i}" aria-label="Роль: ${esc(t.n)}">${ROLES.filter(x=>!x.admin).map(x=>`<option value="${x.id}"${x.id===t.r?' selected':''}>${esc(x.label)}</option>`).join('')}</select>`;
+    return `<tr><td><span class="tm-who"><span class="ava">${ini(t.n)}</span><span><b>${esc(t.n)}</b><small>${esc(t.p)}</small></span></span></td><td>${esc(t.e)}</td><td>${sel}</td><td class="muted" id="tm-acc-${i}">${esc(ACCESS[t.r])} · ${t.e==='Управляющая компания'?'все предприятия':'только '+esc(t.e)}</td><td>${t.inv?'<span class="chip warn">приглашен</span>':'<span class="chip ok">активен</span>'}</td></tr>`}).join('');
+  $('#tm-count').textContent=TEAM.length+' сотрудников · '+(ents.length-1)+' предприятий';
+}
+$('#tm-ent').addEventListener('change',e=>{teamEnt=e.target.value;renderTeam()});
+$('#tm-rows').addEventListener('change',e=>{const s=e.target.closest('[data-tm]');if(!s)return;const t=TEAM[+s.dataset.tm];t.r=s.value;
+  $('#tm-acc-'+s.dataset.tm).textContent=ACCESS[t.r]+' · '+(t.e==='Управляющая компания'?'все предприятия':'только '+t.e);
+  toast(t.n+': роль «'+roleOf(t.r).label+'». Задачи и доступ обновятся при следующем входе')});
+$('#tm-inv-save').addEventListener('click',()=>{const n=$('#tm-inv-n').value.trim(),m=$('#tm-inv-m').value.trim();
+  if(!n||!m){toast('Укажите имя и почту сотрудника');return}
+  TEAM.push({n,p:'Новый сотрудник',e:$('#tm-inv-e').value,r:$('#tm-inv-r').value,inv:true});
+  closeModals();renderTeam();toast('Приглашение отправлено: '+m+'. Роль – «'+roleOf($('#tm-inv-r').value).label+'»')});
+function renderMeMenu(){
+  const r=roleOf(curRole);
+  $('#me-menu').innerHTML=`<span class="eyebrow">${esc(r.full)}</span><div class="me-role"><b>Роль: ${esc(r.label)}</b><small>${r.admin?'Вы руководитель – назначаете роли сотрудникам':'Роль назначил руководитель. Чтобы поменять, обратитесь к нему'}</small></div><div class="sep"></div>`+
+    (r.admin?`<button data-go="team"><span class="t">Команда и роли<small>${TEAM.length} сотрудников</small></span></button>`:'')+
+    `<button data-modal="m-plans"><span class="t">Тариф<small>«Отдел» · в рублях</small></span></button>`;
+}
+$('#me-btn').addEventListener('click',e=>{e.stopPropagation();const m=$('#me-menu');if(!m.hidden){m.hidden=true;return}renderMeMenu();m.hidden=false});
+document.addEventListener('click',e=>{if(!e.target.closest('#me-menu,#me-btn'))$('#me-menu').hidden=true;else if(e.target.closest('#me-menu [data-go],#me-menu [data-modal]'))$('#me-menu').hidden=true});
+// селект предприятий в приглашении
+$('#tm-inv-e').innerHTML=[...new Set(TEAM.map(t=>t.e))].map(e=>`<option>${esc(e)}</option>`).join('');
+$('#tm-inv-r').innerHTML=ROLES.filter(x=>!x.admin).map(x=>`<option value="${x.id}">${esc(x.label)}</option>`).join('');
+renderTeam();
 
 // мини-календарь на главной
 (function(){let h=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(d=>`<span class="wd">${d}</span>`).join('');
