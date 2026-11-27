@@ -9,7 +9,7 @@ const [, , id, FPS = '25'] = process.argv;
 const fps = +FPS, fmt = '16x9';
 const voice = JSON.parse(fs.readFileSync(`build/${id}/voice/voice.json`));
 const PACE = (require('./steps.js')[id] || {}).pace || 1;
-const MUSIC = '/Users/kate/Documents/Проекты/frontpupirka/maker/promo/music_ui_soft.wav';
+const MUSIC = '/Users/kate/Documents/Проекты/frontpupirka/maker/promo/music_ui_tech.wav';
 
 function parts(text, d) {
   // субтитр – по фразам, не длиннее ~85 знаков; время – пропорционально длине
@@ -63,7 +63,7 @@ function timeline(meta) {
   const ins = vo.map(s => `-i build/${id}/voice/${s.v}`).join(' ');
   const dl = vo.map((s, i) => `[${i}:a]adelay=${Math.round(s.vs * 1000)}|${Math.round(s.vs * 1000)},volume=1.0[v${i}]`).join(';');
   const mix = vo.map((_, i) => `[v${i}]`).join('') + `amix=inputs=${vo.length}:normalize=0[vv]`;
-  const mus = `;[${vo.length}:a]volume=0.08,afade=t=in:d=1,afade=t=out:st=${(TL.total - 2).toFixed(2)}:d=2[mm];[vv][mm]amix=inputs=2:normalize=0,atrim=0:${TL.total.toFixed(2)}[a]`;
+  const mus = `;[${vo.length}:a]volume=0.1,afade=t=in:d=1,afade=t=out:st=${(TL.total - 2).toFixed(2)}:d=2[mm];[vv][mm]amix=inputs=2:normalize=0,atrim=0:${TL.total.toFixed(2)}[a]`;
   execSync(`ffmpeg -y -loglevel error ${ins} -stream_loop -1 -i "${MUSIC}" -filter_complex "${dl};${mix}${mus}" -map "[a]" -ar 48000 build/${id}/${fmt}/audio.wav`);
   execSync(`ffmpeg -y -loglevel error -framerate ${fps} -i ${fr}/f%05d.jpg -i build/${id}/${fmt}/audio.wav -threads 2 -c:v libx264 -preset medium -crf 21 -pix_fmt yuv420p -c:a aac -b:a 160k -shortest -movflags +faststart out/${id}.mp4`);
   fs.rmSync(fr, { recursive: true, force: true });

@@ -641,10 +641,8 @@ th{border-bottom-color:var(--line-2)}
 @media (max-width:700px){.tasks,.stats{grid-template-columns:minmax(0,1fr)}.task{min-height:0}.split{padding:8px}}
 
 /* холдинг: роли и предприятия */
-.roles{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
-.roles button{height:30px;padding:0 12px;border-radius:999px;font-size:12.5px;font-weight:600;color:#fff;background:rgba(255,255,255,.1)}
-.roles button:hover{background:rgba(255,255,255,.18)}
-.roles button.on{background:#fff;color:var(--ink)}
+.role-tag{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;font-size:12.5px;font-weight:600;margin-bottom:16px}
+.role-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--lime)}
 .hold{position:relative}
 .hold-btn{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px 0 10px;border-radius:999px;background:var(--panel);font-size:13px;font-weight:600;white-space:nowrap}
 .hold-btn .dot{width:22px;height:22px;border-radius:7px;background:var(--navy);color:var(--lime);display:grid;place-items:center;font-size:11px;font-weight:800}
@@ -769,7 +767,7 @@ th{border-bottom-color:var(--line-2)}
         <div class="home">
           <div class="hero">
             <div>
-              <div class="roles" id="roles"></div>
+              <span class="role-tag" id="role-tag">Экономист · УК холдинга</span><br>
               <span class="hi" id="hello">Добрый день, Анна!</span>
               <h1>Сегодня 3 задачи ждут вашей проверки</h1>
               <p>Понедельник, 2 ноября. Остальное Ordo сделал сам.</p>
@@ -1639,7 +1637,7 @@ function openReport(id){
 }
 openReport('deb');
 
-// роли на главной: у каждого специалиста свои задачи дня
+// пользователи по ролям: у каждого специалиста свои задачи дня
 const ROLES=[
   {id:'assist',label:'Помощник руководителя',name:'Ирина',full:'Ирина Котова',sub:'Помощник генерального · УК',ava:'ИК',tasks:[
     ['lav','01','сейчас','i-chat','Протокол планерки и 7 поручений','поручения уйдут в Jira',60,{rep:'meet'}],
@@ -1665,14 +1663,15 @@ const ROLES=[
 let curRole='econ';
 function setRole(id){
   const r=ROLES.find(x=>x.id===id);curRole=id;
-  $('#roles').innerHTML=ROLES.map(x=>`<button class="${x.id===id?'on':''}" data-role="${x.id}">${esc(x.label)}</button>`).join('');
+  $('#role-tag').textContent=r.sub;
   $('#hello').textContent='Добрый день, '+r.name+'!';
   $('#tasks').innerHTML=r.tasks.map(([c,n,when,ic,b,sub,w,to])=>{const a=to.rep?`data-rep="${to.rep}"`:to.con?`data-con="${to.con}"`:`data-go="${to.go}"`;
     return `<button class="task ${c}" ${a}><span class="top"><span>${n}</span><span>${esc(when)}</span></span><svg class="i"><use href="#${ic}"/></svg><b>${esc(b)}</b><span class="prog"><span>${esc(sub)}</span><i><u style="width:${w}%"></u></i></span></button>`}).join('');
   $('#me-ava').textContent=r.ava;$('#me-name').textContent=r.full;$('#me-sub').textContent=r.sub;
 }
-$('#roles').addEventListener('click',e=>{const b=e.target.closest('[data-role]');if(b)setRole(b.dataset.role)});
-setRole('econ');
+// роль выбирают один раз при регистрации; для демо пользователя задают адресом ?as=assist|econ|acc|law|buy
+window.ordoAs=setRole;
+setRole((ROLES.find(x=>x.id===new URLSearchParams(location.search).get('as'))||{id:'econ'}).id);
 
 // выбор предприятия холдинга
 const ENTS=[['Весь холдинг','6 юрлиц'],['Управляющая компания','УК'],['Коксохимический завод','кокс и химия'],['Шахта «Северная»','добыча угля'],['Горно-обогатительный комбинат','концентрат'],['Металлургический завод','чугун и сталь'],['Торговый дом','сбыт']];
