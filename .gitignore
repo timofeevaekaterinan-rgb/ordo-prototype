@@ -4,3 +4,4 @@ presentation/
 video/build/
 video/out/
 video/frames/
+video/*.wav

@@ -9,7 +9,17 @@ const [, , id, FPS = '25'] = process.argv;
 const fps = +FPS, fmt = '16x9';
 const voice = JSON.parse(fs.readFileSync(`build/${id}/voice/voice.json`));
 const PACE = (require('./steps.js')[id] || {}).pace || 1;
-const MUSIC = '/Users/kate/Documents/Проекты/frontpupirka/maker/promo/music_ui_tech.wav';
+const MUSIC = path.resolve(__dirname, 'music_ordo.wav');  // своя музыка: python3 music_ordo.py <длительность>
+const MUSIC_VOL = 0.18;
+// звук: голос по сегментам + тихая музыка → build/<id>/16x9/audio.wav
+function audio(TL) {
+  const vo = TL.segs.filter(s => s.v);
+  const ins = vo.map(s => `-i build/${id}/voice/${s.v}`).join(' ');
+  const dl = vo.map((s, i) => `[${i}:a]adelay=${Math.round(s.vs * 1000)}|${Math.round(s.vs * 1000)},volume=1.0[v${i}]`).join(';');
+  const mix = vo.map((_, i) => `[v${i}]`).join('') + `amix=inputs=${vo.length}:normalize=0[vv]`;
+  const mus = `;[${vo.length}:a]volume=${MUSIC_VOL},afade=t=in:d=1,afade=t=out:st=${(TL.total - 2).toFixed(2)}:d=2[mm];[vv][mm]amix=inputs=2:normalize=0,atrim=0:${TL.total.toFixed(2)}[a]`;
+  execSync(`ffmpeg -y -loglevel error ${ins} -stream_loop -1 -i "${MUSIC}" -filter_complex "${dl};${mix}${mus}" -map "[a]" -ar 48000 build/${id}/${fmt}/audio.wav`);
+}
 
 function parts(text, d) {
   // субтитр – по фразам, не длиннее ~85 знаков; время – пропорционально длине
@@ -37,6 +47,13 @@ function timeline(meta) {
   const meta = JSON.parse(fs.readFileSync(`build/${id}/${fmt}/meta.json`));
   const TL = timeline(meta);
   fs.writeFileSync(`build/${id}/${fmt}/timeline.json`, JSON.stringify(TL));
+  // AUDIO_ONLY=1 – только новая звуковая дорожка к уже собранному out/<id>.mp4, кадры не перерисовываем
+  if (process.env.AUDIO_ONLY) {
+    audio(TL);
+    execSync(`ffmpeg -y -loglevel error -i out/${id}.mp4 -i build/${id}/${fmt}/audio.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 160k -shortest -movflags +faststart out/${id}.tmp.mp4`);
+    fs.renameSync(`out/${id}.tmp.mp4`, `out/${id}.mp4`);
+    console.log('звук заменен', `out/${id}.mp4`); return;
+  }
   const b = await puppeteer.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: 'new', args: ['--hide-scrollbars', '--force-color-profile=srgb', '--allow-file-access-from-files'] });
   const fr = `frames/${id}`;
   fs.rmSync(fr, { recursive: true, force: true }); fs.mkdirSync(fr, { recursive: true });
@@ -58,13 +75,7 @@ function timeline(meta) {
     if (f % 500 === 0) console.log('кадр', f, '/', n);
   }
   await p.close(); await b.close();
-  // звук: голос по сегментам + тихая музыка
-  const vo = TL.segs.filter(s => s.v);
-  const ins = vo.map(s => `-i build/${id}/voice/${s.v}`).join(' ');
-  const dl = vo.map((s, i) => `[${i}:a]adelay=${Math.round(s.vs * 1000)}|${Math.round(s.vs * 1000)},volume=1.0[v${i}]`).join(';');
-  const mix = vo.map((_, i) => `[v${i}]`).join('') + `amix=inputs=${vo.length}:normalize=0[vv]`;
-  const mus = `;[${vo.length}:a]volume=0.1,afade=t=in:d=1,afade=t=out:st=${(TL.total - 2).toFixed(2)}:d=2[mm];[vv][mm]amix=inputs=2:normalize=0,atrim=0:${TL.total.toFixed(2)}[a]`;
-  execSync(`ffmpeg -y -loglevel error ${ins} -stream_loop -1 -i "${MUSIC}" -filter_complex "${dl};${mix}${mus}" -map "[a]" -ar 48000 build/${id}/${fmt}/audio.wav`);
+  audio(TL);
   execSync(`ffmpeg -y -loglevel error -framerate ${fps} -i ${fr}/f%05d.jpg -i build/${id}/${fmt}/audio.wav -threads 2 -c:v libx264 -preset medium -crf 21 -pix_fmt yuv420p -c:a aac -b:a 160k -shortest -movflags +faststart out/${id}.mp4`);
   fs.rmSync(fr, { recursive: true, force: true });
   console.log('готово', `out/${id}.mp4`, TL.total.toFixed(1) + ' с');
