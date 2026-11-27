@@ -27,9 +27,9 @@ module.exports = {
       { do: "ordoAs('buy');" + click('.rcard[data-rep=kp]'), t: "$('#art-gen .flag')", wait: 900, label: '16:00 · Закупки',
         say: 'Четыре часа. Закупки получили пять коммерческих предложений в PDF. ИИ сводит их в одну таблицу и советует поставщика – с объяснением почему.' },
       { do: "ordoAs('assist');" + click('.nav a[data-go=home]') + "setTimeout(()=>document.querySelector('#hold-btn').click(),200);", t: "$('#hold-menu')", wait: 900, label: 'Весь холдинг – одна система',
-        say: 'Десятки юрлиц – одна система. Права доступа по предприятиям и ролям.' },
-      { do: "document.querySelector('#hold-menu').hidden=true;" + click('.nav a[data-go=sources]'), t: "$('#v-sources .flow .core')", wait: 800, label: 'Внутри контура холдинга',
-        say: 'И все работает на серверах холдинга: данные не уходят в сторонние нейросети.' },
+        say: 'Все предприятия холдинга – в одной системе. И она подключается к тому, чем вы уже работаете: 1С, Диадок, Jira, почта.' },
+      { do: "document.querySelector('#hold-menu').hidden=true;ordoAs('head');" + click('.nav a[data-go=home]') + "setTimeout(()=>{document.querySelector('#me-btn').click();document.querySelector('#me-menu [data-go=team]').click();document.querySelector('#me-menu').hidden=true},200);", t: "$('#v-team .card')", wait: 1000, label: 'Данные под защитой',
+        say: 'Ваши данные под защитой. Каждый видит только свое – роли и доступ назначает руководитель. А защиту настраиваем под требования вашей службы безопасности.' },
     ],
   },
 };
