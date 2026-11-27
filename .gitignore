@@ -1,3 +1,6 @@
 .DS_Store
 docs/
 presentation/
+video/build/
+video/out/
+video/frames/
