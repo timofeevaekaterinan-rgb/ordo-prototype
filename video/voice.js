@@ -11,10 +11,10 @@ const sleep = ms => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0,
 const out = [];
 lines.forEach((t, i) => {
   const base = `${dir}/i${String(i).padStart(2, '0')}`;
-  // как читать: Ordo – «Ордо», ИИ – «и-и», Jira – «Джи́ра», 1С – «один э́с», Диадок – «диадо́к», ГОК – «гок», PDF – «пэ-дэ-эф»
+  // как читать: Ordo – «Ордо», ИИ – «и-и», Jira – «Джи́ра», 1С – «один-эс», Диадок – «диа док» (знак ударения голос для них игнорирует – вариант B, выбран Катей), ГОК – «гок», PDF – «пэ-дэ-эф»
   // ударение – знак U+0301 после ударной гласной
   const say = t.replace(/[«»]/g, '').replace(/Ordo/g, 'Ордо').replace(/(^|[^А-Яа-я])ИИ(?![А-Яа-я])/g, '$1И-И').replace(/Jira/g, 'Джи́ра')
-    .replace(/1С/g, 'один э́с').replace(/Диадок/g, 'диадо́к')
+    .replace(/1С/g, 'один-эс').replace(/Диадок/g, 'диа док')
     .replace(/ГОКе/g, 'гоке').replace(/PDF/g, 'пэ-дэ-эф').replace(/план-факт/g, 'план факт');
   const key = VOICE + '|' + RATE + '|' + say;
   const done = fs.existsSync(base + '.wav') && fs.existsSync(base + '.key') && fs.readFileSync(base + '.key', 'utf8') === key;
