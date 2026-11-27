@@ -640,6 +640,20 @@ th{border-bottom-color:var(--line-2)}
 @media (max-width:1100px){.hero{grid-template-columns:minmax(0,1fr)}.dash{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:700px){.tasks,.stats{grid-template-columns:minmax(0,1fr)}.task{min-height:0}.split{padding:8px}}
 
+/* холдинг: роли и предприятия */
+.roles{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.roles button{height:30px;padding:0 12px;border-radius:999px;font-size:12.5px;font-weight:600;color:#fff;background:rgba(255,255,255,.1)}
+.roles button:hover{background:rgba(255,255,255,.18)}
+.roles button.on{background:#fff;color:var(--ink)}
+.hold{position:relative}
+.hold-btn{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px 0 10px;border-radius:999px;background:var(--panel);font-size:13px;font-weight:600;white-space:nowrap}
+.hold-btn .dot{width:22px;height:22px;border-radius:7px;background:var(--navy);color:var(--lime);display:grid;place-items:center;font-size:11px;font-weight:800}
+.hold-btn small{color:var(--ink-3);font-weight:500}
+.hold-btn svg.i{width:14px;height:14px;color:var(--ink-3);transform:rotate(90deg)}
+.hold .rep-menu{left:0;top:44px;width:300px}
+.jira-key{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:7px;background:#E8EEFF;color:#2453C7;font-size:12px;font-weight:700;white-space:nowrap}
+.jira-btn{margin-left:auto}
+
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 
 /* адаптив */
@@ -721,6 +735,7 @@ th{border-bottom-color:var(--line-2)}
     <button class="ibtn burger" id="burger" aria-label="Меню"><svg class="i"><use href="#i-menu"/></svg></button>
     <div class="lights" aria-hidden="true"><span></span><span></span><span></span></div>
     <div class="brand"><svg><use href="#logo"/></svg>Ordo</div>
+    <div class="hold"><button class="hold-btn" id="hold-btn" aria-haspopup="true"><span class="dot">ПХ</span><span id="hold-name">Весь холдинг</span><small id="hold-sub">6 юрлиц</small><svg class="i"><use href="#i-chev"/></svg></button><div class="rep-menu" id="hold-menu" hidden></div></div>
     <div class="search" role="button" tabindex="0" data-toast="Поиск по документам, отчетам и чатам работает по локальному индексу"><svg class="i"><use href="#i-search"/></svg><span>Найти договор, отчет, контрагента…</span><kbd>⌘K</kbd></div>
   </header>
 
@@ -743,7 +758,7 @@ th{border-bottom-color:var(--line-2)}
       </nav>
       <div class="side-foot">
         <button class="engine" data-go="sources" title="Где обрабатываются данные"><b class="eng-on"><span class="dot"></span>Работает без интернета</b><span>Модель Ordo-32B<br>База законов от 01.11.2026</span></button>
-        <button class="me" data-modal="m-plans"><span class="ava">АБ</span><span><b>Анна Белова</b><small>Финансы · тариф «Отдел»</small></span></button>
+        <button class="me" data-modal="m-plans"><span class="ava" id="me-ava">АБ</span><span><b id="me-name">Анна Белова</b><small id="me-sub">Экономист · УК холдинга</small></span></button>
       </div>
     </aside>
 
@@ -754,31 +769,13 @@ th{border-bottom-color:var(--line-2)}
         <div class="home">
           <div class="hero">
             <div>
-              <span class="hi">Добрый день, Анна!</span>
+              <div class="roles" id="roles"></div>
+              <span class="hi" id="hello">Добрый день, Анна!</span>
               <h1>Сегодня 3 задачи ждут вашей проверки</h1>
               <p>Понедельник, 2 ноября. Остальное Ordo сделал сам.</p>
               <button class="btn" data-go="acts">Календарь <svg class="i" style="width:14px;height:14px;transform:rotate(-45deg)"><use href="#i-send"/></svg></button>
             </div>
-            <div class="tasks">
-              <button class="task lav" data-go="review">
-                <span class="top"><span>01</span><span>завтра</span></span>
-                <svg class="i"><use href="#i-doc"/></svg>
-                <b>Акты и счета на 1 284 000 ₽</b>
-                <span class="prog"><span>8 документов · проверено 6</span><i><u style="width:75%"></u></i></span>
-              </button>
-              <button class="task peach" data-con="sev">
-                <span class="top"><span>02</span><span>черновик</span></span>
-                <svg class="i"><use href="#i-pen"/></svg>
-                <b>Договор с АО «Северлес»</b>
-                <span class="prog"><span>3 замечания по закону</span><i><u style="width:40%"></u></i></span>
-              </button>
-              <button class="task lime" data-go="law">
-                <span class="top"><span>03</span><span>радар</span></span>
-                <svg class="i"><use href="#i-scale"/></svg>
-                <b>НДС 22%: затронуто 14 договоров</b>
-                <span class="prog"><span>сделано 1 шаг из 5</span><i><u style="width:20%"></u></i></span>
-              </button>
-            </div>
+            <div class="tasks" id="tasks"></div>
           </div>
 
           <div class="composer">
@@ -1142,19 +1139,19 @@ th{border-bottom-color:var(--line-2)}
                   </div>
                   <div class="card box">
                     <h3>Что это значит для вас</h3>
-                    <p>Компания на общей системе, поэтому изменение касается всех продаж. Я проверила ваши документы:</p>
+                    <p>Все юрлица холдинга на общей системе, поэтому изменение касается всех продаж. Я проверила документы шести юрлиц:</p>
                     <ul>
-                      <li>В <b>14 действующих договорах</b> цена указана «включая НДС 20%». Если цена фиксированная, нужно допсоглашение: кто несет разницу в 2%.</li>
+                      <li>В <b>87 договорах шести юрлиц</b> цена указана «включая НДС 20%». Если цена фиксированная, нужно допсоглашение: кто несет разницу в 2%.</li>
                       <li><b>3 шаблона</b> договоров еще со старой ставкой – могу обновить.</li>
                       <li>В 1С у <b>6 позиций номенклатуры</b> стоит ставка 20%.</li>
                     </ul>
-                    <div><button class="btn sm" id="show-aff"><svg class="i" style="width:14px;height:14px"><use href="#i-doc"/></svg>Показать 14 договоров</button></div>
+                    <div><button class="btn sm" id="show-aff"><svg class="i" style="width:14px;height:14px"><use href="#i-doc"/></svg>Показать 87 договоров</button></div>
                     <div class="affected" id="aff">
                       <div><span>ПАО «Уралэнерго» · дог. 02/26</span><span class="chip warn">фикс. цена</span></div>
                       <div><span>ООО «ТехноСтрой» · дог. 17/24</span><span class="chip warn">фикс. цена</span></div>
                       <div><span>ООО «Меридиан» · дог. 41/25</span><span class="chip neu">цена в спецификации</span></div>
                       <div><span>ООО «Альфа Логистик» · дог. 33/24</span><span class="chip warn">фикс. цена</span></div>
-                      <div><span class="muted">и еще 10 договоров</span><button class="btn sm ghost" data-toast="Подготовлено 14 черновиков допсоглашений в папке «Договоры/НДС 2026»">Подготовить допсоглашения</button></div>
+                      <div><span class="muted">и еще 83 договора</span><button class="btn sm ghost" data-toast="Подготовлено 87 черновиков допсоглашений в папке «Договоры/НДС 2026»">Подготовить допсоглашения</button></div>
                     </div>
                   </div>
                   <div class="card box">
@@ -1163,7 +1160,7 @@ th{border-bottom-color:var(--line-2)}
                       <label><input type="checkbox" id="td1" checked><span>Обновить 1С:Бухгалтерию до актуального релиза (сделано 28.12.2025)</span></label>
                       <label><input type="checkbox" id="td2"><span>Поменять ставку на 22% у 6 позиций номенклатуры – <a href="#" data-toast="Открыт список: 6 позиций со ставкой 20% в 1С">показать список</a></span></label>
                       <label><input type="checkbox" id="td3"><span>Обновить 3 шаблона договоров</span></label>
-                      <label><input type="checkbox" id="td4"><span>Отправить допсоглашения по 14 договорам с фиксированной ценой</span></label>
+                      <label><input type="checkbox" id="td4"><span>Отправить допсоглашения по 87 договорам с фиксированной ценой</span></label>
                       <label><input type="checkbox" id="td5"><span>Проверить авансы 2025 года, по которым отгрузка была в 2026-м</span></label>
                     </div>
                   </div>
@@ -1500,6 +1497,71 @@ const REPORTS=[
      ['Федоров И.','19','5 100 000','21%',['4','warn']],
      ['Орлова Е.','8','2 200 000','25%','–']]]}
 ];
+// сценарии холдинга: помощник руководителя, экономист, бухгалтер ОЦО, закупки
+REPORTS.unshift(
+  {id:'meet',name:'Протокол планерки',group:'Руководство',src:'Запись совещания · Jira',st:['новый','info'],upd:'Сегодня, 8:40',kind:'table',
+   title:'Протокол планерки, 2 ноября',ver:'Из записи 52 минуты · 9 участников · 5 предприятий',xls:'Протокол_планерки_02.11',
+   ask:'Вот запись утренней планерки. Сделай протокол и поручения с ответственными и сроками.',
+   steps:['Расшифровала запись: 52 минуты, 9 участников','Выделила 4 решения и 7 поручений','Сверила с Jira: 3 поручения с прошлой недели не закрыты'],
+   say:['Протокол готов: 4 решения и 7 новых поручений, у каждого есть ответственный и срок.','По Jira три поручения с прошлой планерки еще открыты – поставила их в начало протокола.'],
+   sugg:['Разослать участникам','Сводка для генерального','Сравнить с прошлой планеркой'],
+   kpis:[['Новых поручений','7','у 7 ответственных'],['Решений принято','4','по 3 предприятиям'],['Не закрыто с прошлой недели','3','по данным Jira','crit']],
+   flag:['warn','3 поручения с прошлой планерки просрочены','Jira: PMO-388, PMO-391, PMO-395. Поставила их в начало протокола, чтобы обсудить первыми.'],
+   table:['Поручения',[['Поручение'],['Ответственный'],['Предприятие'],['Срок',1],['Jira']],[
+     ['План ремонта коксовой батареи № 2','Ковалев А. С.','Коксохим','06.11',['не создано','neu']],
+     ['График отгрузки концентрата на декабрь','Морозова Е. В.','ГОК','05.11',['не создано','neu']],
+     ['Допсоглашения по НДС во всех договорах','Орлов Д. К.','Все юрлица','10.11',['не создано','neu']],
+     ['Сверка взаиморасчетов УК и заводов','Соколова О. Н.','УК','03.11',['не создано','neu']],
+     ['Сравнение КП на огнеупоры','Лебедев С. И.','Металлургический завод','05.11',['не создано','neu']],
+     ['План-факт себестоимости по площадкам','Белова А. Ю.','Все предприятия','03.11',['не создано','neu']],
+     ['Инструктаж по новым правилам охраны труда','Гусев П. Р.','Шахта «Северная»','09.11',['не создано','neu']]]],
+   jira:{label:'Создать 7 задач в Jira',col:4,start:412,proj:'PMO'}},
+  {id:'pf',name:'План-факт себестоимости',group:'Финансы',src:'1С всех предприятий · бюджет',st:['авто · ежедневно','ok'],upd:'Обновлен в 7:30',kind:'bars',spark:[1.0,-0.8,6.2,1.9,3.3],
+   title:'План-факт себестоимости по предприятиям, октябрь 2026',ver:'Обновлено в 7:30 · данные 1С пяти предприятий на 07:00',xls:'План-факт_октябрь_2026',
+   sched:[true,'Каждый день в 7:30 · сводка к планерке'],
+   ask:'Нужен план-факт себестоимости по всем предприятиям за октябрь. Покажи, где перерасход и почему.',
+   steps:['Взяла фактические затраты из 1С пяти предприятий','План – из бюджета холдинга','Разобрала отклонения больше 3% по статьям затрат'],
+   say:['По холдингу себестоимость выше плана на 1,8%. Больше всего перерасход на ГОК: +6,2%.','Причины две: с 1 октября вырос тариф на электроэнергию, и был внеплановый ремонт мельницы № 3. Обе подтверждены документами в 1С.'],
+   sugg:['Разбить по статьям','Сводка для планерки','Прогноз на ноябрь'],
+   kpis:[['Себестоимость, факт','4,82 млрд ₽','план 4,73 млрд ₽'],['Отклонение от плана','+1,8%','+87 млн ₽','warn'],['Больше всего','ГОК: +6,2%','электроэнергия и ремонт','crit']],
+   flag:['warn','ГОК: перерасход 57 млн ₽ (+6,2%)','Тариф на электроэнергию вырос с 1 октября, плюс внеплановый ремонт мельницы № 3. Источники – счета затрат в 1С ГОК.'],
+   table:['По предприятиям, млн ₽',[['Предприятие'],['План',1],['Факт',1],['Отклонение',1],['Причина']],[
+     ['Коксохимический завод','1 850','1 868',['+1,0%','neu'],'Цена угольной шихты'],
+     ['Шахта «Северная»','980','972',['−0,8%','ok'],'–'],
+     ['Горно-обогатительный комбинат','920','977',['+6,2%','crit'],'Электроэнергия, ремонт мельницы'],
+     ['Металлургический завод','860','876',['+1,9%','warn'],'Огнеупоры'],
+     ['Управляющая компания','120','124',['+3,3%','warn'],'Консалтинг'],
+     [{b:'Холдинг'},{b:'4 730'},{b:'4 817'},{b:'+1,8%'},'']]]},
+  {id:'ic',name:'Сверка между юрлицами',group:'Учет',src:'1С шести юрлиц',st:['3 расхождения','crit'],upd:'Сегодня, 10:15',kind:'table',
+   title:'Сверка взаиморасчетов внутри холдинга, октябрь 2026',ver:'Проверено 1 248 документов · 14 пар юрлиц',xls:'Сверка_внутри_холдинга_октябрь',
+   sched:[true,'Ежемесячно, 3-го числа · акты сверки уходят в ЭДО после проверки'],
+   ask:'Сверь взаиморасчеты между всеми нашими юрлицами за октябрь и покажи только расхождения.',
+   steps:['Взяла реализации и поступления из 1С шести юрлиц','Сопоставила 1 248 документов по 14 парам','Нашла 3 расхождения и причину каждого'],
+   say:['Из 14 пар юрлиц сходятся 11. Расхождений три, всего на 412 300 ₽.','Самое крупное: УПД Коксохима на 318 000 ₽ металлургический завод провел в ноябре, а не в октябре. Остальные 11 актов сверки готовы к отправке.'],
+   sugg:['Отправить 11 актов сверки','Письма по расхождениям','Показать все пары'],
+   kpis:[['Документов сверено','1 248','14 пар юрлиц'],['Сходятся','11 пар','акты готовы к отправке','ok'],['Расхождения','412 300 ₽','в 3 парах','crit']],
+   table:['Пары юрлиц',[['Пара юрлиц'],['Расхождение, ₽',1],['Причина'],['Статус']],[
+     ['Коксохим → Металлургический завод','318 000','УПД № 2211 проведен в ноябре',['расхождение','crit']],
+     ['ГОК → Коксохим','62 500','Нет акта на доп. работы в 1С ГОК',['расхождение','crit']],
+     ['УК → Шахта «Северная»','31 800','Разная ставка НДС в услугах управления',['расхождение','crit']],
+     ['Шахта «Северная» → Коксохим','–','Сходится',['готово','ok']],
+     ['УК → ГОК','–','Сходится',['готово','ok']],
+     [{b:'Еще 9 пар'},'–','Сходятся',['готово','ok']]]]},
+  {id:'kp',name:'Сравнение КП на огнеупоры',group:'Закупки',src:'5 КП из почты · история закупок',st:['новый','info'],upd:'Сегодня, 15:20',kind:'bars',spark:[39.6,38.9,41.2,43.1,44.7],
+   title:'Сравнение предложений: огнеупорный кирпич, 420 т',ver:'Из 5 PDF и 2 писем · цены приведены к доставке на завод',xls:'Сравнение_КП_огнеупоры',
+   ask:'Вот 5 коммерческих предложений на огнеупоры для металлургического завода. Сравни по цене, срокам и оплате. Кого выбрать?',
+   steps:['Распознала 5 PDF и 2 письма с уточнениями','Привела цены к одной партии с доставкой на завод','Проверила поставщиков по истории закупок'],
+   say:['Дешевле всех «ОгнеупорТрейд» – 38,9 млн ₽, но у них 100% предоплата и срок 75 дней.','Оптимально «Уралогнеупор»: 39,6 млн ₽, отсрочка 30 дней, поставка за 45 дней, прошлые поставки без претензий. Это всего на 1,8% дороже минимума.'],
+   sugg:['Подготовить договор','Запросить скидку','Сравнить с прошлой закупкой'],
+   kpis:[['Предложений','5','от 5 поставщиков'],['Разброс цен','38,9–44,7 млн ₽','15% между крайними'],['Рекомендация','Уралогнеупор','39,6 млн ₽ · отсрочка 30 дней','ok']],
+   flag:['ok','Рекомендую «Уралогнеупор»','Цена на 1,8% выше минимальной, зато без предоплаты, с коротким сроком и проверенной историей поставок.'],
+   table:['Предложения',[['Поставщик'],['Цена, млн ₽',1],['Срок, дней',1],['Оплата'],['Вывод']],[
+     ['Уралогнеупор','39,6','45','отсрочка 30 дней',['рекомендую','ok']],
+     ['ОгнеупорТрейд','38,9','75','предоплата 100%',['долгий срок','warn']],
+     ['Сибогнеупор','41,2','40','аванс 50%',['дороже','neu']],
+     ['Керамика-Пром','43,1','30','отсрочка 15 дней',['дороже','neu']],
+     ['ТД Футеровка','44,7','35','отсрочка 30 дней',['нет истории','warn']]]]}
+);
 const RBY=Object.fromEntries(REPORTS.map(r=>[r.id,r]));
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const CLR={ok:'var(--ok)',warn:'var(--warn)',crit:'var(--crit)',acc:'var(--accent)'};
@@ -1546,6 +1608,7 @@ $('#rep-sw').addEventListener('click',()=>{const m=$('#rep-menu');
   m.hidden=false;$('#rep-sw').setAttribute('aria-expanded','true')});
 
 function cell(c,num){
+  if(c&&c.jira)return `<span class="jira-key">${esc(c.jira)}</span>`;
   if(c&&typeof c==='object'&&!Array.isArray(c))return `<b>${esc(c.b)}</b>`;
   if(Array.isArray(c))return c[1]==='neu'?`<span class="muted">${esc(c[0])}</span>`:`<span class="chip ${c[1]}">${esc(c[0])}</span>`;
   return esc(c);
@@ -1565,15 +1628,61 @@ function openReport(id){
     ${r.say.map(t=>`<p>${esc(t)}</p>`).join('')}
     <div class="sugg">${r.sugg.map(t=>`<button data-toast="${esc(t)}: готовлю в чате отчета">${esc(t)}</button>`).join('')}</div></div>`;
   const [tt,cols,rows]=r.table;
-  $('#art-gen').innerHTML=`<div class="card sched"><svg class="i" style="color:var(--accent)"><use href="#i-clock"/></svg><div class="t"><b>Обновлять автоматически</b><span id="gsched-txt">${esc(r.sched[1])}</span></div><button class="switch" role="switch" aria-checked="${r.sched[0]}" id="gsched" aria-label="Обновлять автоматически"></button></div>
+  $('#art-gen').innerHTML=`${r.sched?`<div class="card sched"><svg class="i" style="color:var(--accent)"><use href="#i-clock"/></svg><div class="t"><b>Обновлять автоматически</b><span id="gsched-txt">${esc(r.sched[1])}</span></div><button class="switch" role="switch" aria-checked="${r.sched[0]}" id="gsched" aria-label="Обновлять автоматически"></button></div>`:''}
     <div class="kpis">${r.kpis.map(k=>`<div class="card kpi"><small>${esc(k[0])}</small><b class="num"${k[3]?` style="color:var(--${k[3]})"`:''}>${esc(k[1])}</b><span class="d ${k[3]?'':'muted'}"${k[3]?` style="color:var(--${k[3]})"`:''}>${esc(k[2])}</span></div>`).join('')}</div>
-    ${r.flag?`<div class="flag"><svg class="i"><use href="#i-alert"/></svg><div class="t"><b>${esc(r.flag[1])}</b><span>${esc(r.flag[2])}</span></div></div>`:''}
-    <div class="card"><div class="sec-h" style="padding:14px 14px 0;margin-bottom:4px"><h2 style="font-size:14px">${esc(tt)}</h2></div>
+    ${r.flag?`<div class="flag ${r.flag[0]==='ok'?'ok':''}"><svg class="i"><use href="#i-${r.flag[0]==='ok'?'check':'alert'}"/></svg><div class="t"><b>${esc(r.flag[1])}</b><span>${esc(r.flag[2])}</span></div></div>`:''}
+    <div class="card"><div class="sec-h" style="padding:14px 14px 0;margin-bottom:4px"><h2 style="font-size:14px">${esc(tt)}</h2>${r.jira?`<button class="btn sm pri jira-btn" id="jira-go">${esc(r.jira.label)}</button>`:''}</div>
     <div class="tbl-wrap"><table><thead><tr>${cols.map(c=>`<th${c[1]?' class="r"':''}>${esc(c[0])}</th>`).join('')}</tr></thead>
     <tbody>${rows.map(row=>`<tr>${row.map((c,i)=>`<td class="${cols[i][1]?'r num':''}">${cell(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`;
-  $('#gsched').addEventListener('click',e=>{const on=e.currentTarget.getAttribute('aria-checked')!=='true';e.currentTarget.setAttribute('aria-checked',on);r.sched[0]=on;$('#gsched-txt').textContent=on?r.sched[1]:'Выключено – отчет обновится только по запросу';toast(on?'Автообновление включено':'Автообновление выключено')});
+  if(r.jira){const go=$('#jira-go');if(r.jira.done)go.remove();else go.addEventListener('click',()=>{r.jira.done=true;rows.forEach((row,k)=>{row[r.jira.col]={jira:r.jira.proj+'-'+(r.jira.start+k)}});r.st=['в Jira','ok'];openReport(id);renderGallery();toast(rows.length+' задач создано в Jira, проект '+r.jira.proj)})}
+  if(r.sched)$('#gsched').addEventListener('click',e=>{const on=e.currentTarget.getAttribute('aria-checked')!=='true';e.currentTarget.setAttribute('aria-checked',on);r.sched[0]=on;$('#gsched-txt').textContent=on?r.sched[1]:'Выключено – отчет обновится только по запросу';toast(on?'Автообновление включено':'Автообновление выключено')});
 }
 openReport('deb');
+
+// роли на главной: у каждого специалиста свои задачи дня
+const ROLES=[
+  {id:'assist',label:'Помощник руководителя',name:'Ирина',full:'Ирина Котова',sub:'Помощник генерального · УК',ava:'ИК',tasks:[
+    ['lav','01','сейчас','i-chat','Протокол планерки и 7 поручений','поручения уйдут в Jira',60,{rep:'meet'}],
+    ['peach','02','просрочено','i-alert','3 поручения в Jira не закрыты','добавлены в протокол',30,{rep:'meet'}],
+    ['lime','03','к 9:00','i-chart','Сводка по предприятиям к планерке','5 предприятий · план-факт',80,{rep:'pf'}]]},
+  {id:'econ',label:'Экономист',name:'Анна',full:'Анна Белова',sub:'Экономист · УК холдинга',ava:'АБ',tasks:[
+    ['lav','01','сегодня','i-chart','План-факт по 5 предприятиям','ГОК: +6,2% к плану',70,{rep:'pf'}],
+    ['peach','02','риск','i-cal','Платежный календарь','разрыв 20 ноября',40,{rep:'pay'}],
+    ['lime','03','согласование','i-chart','Выручка по направлениям','у генерального',90,{rep:'rev'}]]},
+  {id:'acc',label:'Бухгалтер',name:'Ольга',full:'Ольга Соколова',sub:'Бухгалтер · общий центр обслуживания',ava:'ОС',tasks:[
+    ['lav','01','сегодня','i-doc','Сверка между юрлицами','3 расхождения из 1 248 документов',85,{rep:'ic'}],
+    ['peach','02','завтра','i-doc','Акты и счета на 1 284 000 ₽','8 документов · проверено 6',75,{go:'review'}],
+    ['lime','03','радар','i-scale','НДС 22%: 87 договоров','сделан 1 шаг из 5',20,{go:'law'}]]},
+  {id:'law',label:'Юрист',name:'Дмитрий',full:'Дмитрий Орлов',sub:'Юрист · УК холдинга',ava:'ДО',tasks:[
+    ['lav','01','входящий','i-pen','Договор подряда от контрагента','2 риска и 1 пробел',30,{con:'smm'}],
+    ['peach','02','черновик','i-pen','Договор поставки','3 замечания по закону',40,{con:'sev'}],
+    ['lime','03','радар','i-scale','НДС 22%: 87 договоров шести юрлиц','нужны допсоглашения',20,{go:'law'}]]},
+  {id:'buy',label:'Закупки',name:'Сергей',full:'Сергей Лебедев',sub:'Специалист по закупкам',ava:'СЛ',tasks:[
+    ['lav','01','новое','i-chart','5 КП на огнеупоры','рекомендация готова',90,{rep:'kp'}],
+    ['peach','02','черновик','i-pen','Договор с поставщиком','3 замечания по закону',40,{con:'sev'}],
+    ['lime','03','на неделе','i-cal','Оплаты поставщикам','разрыв 20 ноября',50,{rep:'pay'}]]}
+];
+let curRole='econ';
+function setRole(id){
+  const r=ROLES.find(x=>x.id===id);curRole=id;
+  $('#roles').innerHTML=ROLES.map(x=>`<button class="${x.id===id?'on':''}" data-role="${x.id}">${esc(x.label)}</button>`).join('');
+  $('#hello').textContent='Добрый день, '+r.name+'!';
+  $('#tasks').innerHTML=r.tasks.map(([c,n,when,ic,b,sub,w,to])=>{const a=to.rep?`data-rep="${to.rep}"`:to.con?`data-con="${to.con}"`:`data-go="${to.go}"`;
+    return `<button class="task ${c}" ${a}><span class="top"><span>${n}</span><span>${esc(when)}</span></span><svg class="i"><use href="#${ic}"/></svg><b>${esc(b)}</b><span class="prog"><span>${esc(sub)}</span><i><u style="width:${w}%"></u></i></span></button>`}).join('');
+  $('#me-ava').textContent=r.ava;$('#me-name').textContent=r.full;$('#me-sub').textContent=r.sub;
+}
+$('#roles').addEventListener('click',e=>{const b=e.target.closest('[data-role]');if(b)setRole(b.dataset.role)});
+setRole('econ');
+
+// выбор предприятия холдинга
+const ENTS=[['Весь холдинг','6 юрлиц'],['Управляющая компания','УК'],['Коксохимический завод','Кемерово'],['Шахта «Северная»','добыча угля'],['Горно-обогатительный комбинат','концентрат'],['Металлургический завод','чугун и сталь'],['Торговый дом','сбыт']];
+$('#hold-btn').addEventListener('click',e=>{e.stopPropagation();const m=$('#hold-menu');
+  if(!m.hidden){m.hidden=true;return}
+  m.innerHTML='<span class="eyebrow">Предприятия холдинга</span>'+ENTS.map(([n,d],i)=>`<button data-ent="${i}" class="${$('#hold-name').textContent===n?'on':''}"><span class="t">${esc(n)}<small>${esc(d)}</small></span></button>`).join('');
+  m.hidden=false});
+$('#hold-menu').addEventListener('click',e=>{const b=e.target.closest('[data-ent]');if(!b)return;const [n,d]=ENTS[+b.dataset.ent];
+  $('#hold-name').textContent=n;$('#hold-sub').textContent=d;$('#hold-menu').hidden=true;toast(n==='Весь холдинг'?'Показаны данные всех 6 юрлиц':'Показаны данные: '+n)});
+document.addEventListener('click',e=>{if(!e.target.closest('.hold'))$('#hold-menu').hidden=true});
 
 // мини-календарь на главной
 (function(){let h=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(d=>`<span class="wd">${d}</span>`).join('');
@@ -1833,7 +1942,7 @@ $('#chat-cgen').addEventListener('click',e=>{if(e.target.closest('[data-cfixall]
 renderCGallery();updConBadge();openContract('sev');
 
 // право
-$('#show-aff').addEventListener('click',()=>{const a=$('#aff');a.classList.toggle('show');$('#show-aff').lastChild.textContent=a.classList.contains('show')?'Скрыть список':'Показать 14 договоров'});
+$('#show-aff').addEventListener('click',()=>{const a=$('#aff');a.classList.toggle('show');$('#show-aff').lastChild.textContent=a.classList.contains('show')?'Скрыть список':'Показать 87 договоров'});
 
 // источники
 function connect(b){b.disabled=true;b.textContent='Подключаю…';setTimeout(()=>{const c=b.closest('.card');const ch=c.querySelector('.chip');ch.className='chip ok';ch.textContent='подключено';b.remove();toast('Подключено. Первая индексация займет около 10 минут')},1100)}
